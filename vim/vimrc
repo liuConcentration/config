@@ -48,65 +48,62 @@ endif
 "set hidden             " Hide buffers when they are abandoned
 "set mouse=a		" Enable mouse usage (all modes)
 
-
-"语法高亮度显示
-  syntax on
-"去掉有关vi一致性模式，避免以前版本的一些bug和局限
-  set nocompatible
-"显示行号
-  set number
-"检测文件的类型
-  filetype on
-"记录历史的行数
-  set history=1000
-"背景使用黑色
-  set background=dark
-"vim使用自动对起，也就是把当前行的对起格式应用到下一行
-  set autoindent
-"依据上面的对起格式，智能的选择对起方式，对于类似C语言编
-  set smartindent
-"设置Windows风格的C/C++自动缩进,第一行设置tab键为4个空格，第二行设置当行之间交错时使用4个空格
-  set tabstop=4
-  set shiftwidth=4
-"设置匹配模式，类似当输入一个左括号时会匹配相应的那个右括号
-  set showmatch
-"去除vim的GUI版本中的toolbar
-  set guioptions-=T
-"在编辑过程中，在右下角显示光标位置的状态行
-  set ruler
-"默认情况下，寻找匹配是高亮度显示的，该设置关闭高亮显示
-  set nohls
-"使用此设置会快速找到答案，当你找要匹配的单词时，别忘记回车
-  set incsearch
-"如果没有下列行，加上吧
-  if &term=="xterm"
-  set t_Co=8
-  set t_Sb=^[[4%dm
-  set t_Sf=^[[3%dm
-  endif
-
 " Source a global configuration file if available
 if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
 endif
 
+"自定义设置
+set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set expandtab
+
+"
+set nu
+
+" ambiwidth 默认值为 single。在其值为 single 时，
+" 若 encoding 为 utf-8，gvim 显示全角符号时就会
+" 出问题，会当作半角显示。
+set ambiwidth=double
+set autoread                " 自动重新加载外部修改内容
+set autochdir               " 自动切换当前目录为当前文件所在的目录
+
+"文字编码加入utf8
+" 设定默认解码
+set fileencodings=utf-8,gb2312,gbk,gb18030
+set termencoding=utf-8
+set fileformats=unix
+set encoding=utf-8
 
 
-"语言设置
-set langmenu=zh_CN.UTF-8
-set helplang=cn
+"自动缩排
+set ai
 
-"tab设置
-map <F6> :tabprevious<CR>
-map <F7> :tabnext<CR>
-map <F5> :tabnew .<CR>
-imap <F6> <ESC>:tabprevious<CR>i
-imap <F6> <ESC>:tabnext<CR>i
-imap <F5> <ESC>:tabnew .<CR>i
+"搜索不分大小写
+set ic
 
-"状态栏
+"标识关键字
+set hls
+
+:map <F6> :tabprevious<CR>
+:map <F7> :tabnext<CR>
+:map <F5> :tabnew .<CR>
+
+"设置状态栏
 set statusline=%<[%n][%f]%m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).':'.&ff.']'}%y\ [%l,%v][%p%%]
 set laststatus=2
 
 "配色
 colorscheme koehler
+
+
+"ctags
+set tags=tags
+set autochdir
+
+
+
+
+
+
