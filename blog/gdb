@@ -1,0 +1,71 @@
+GDB简单使用方式
+
+1.首先编译c文件
+gcc -g test.c -o test
+-g 参数 用来产生调试符号
+
+2.gdb test 使用gdb开始调试 进入如下界面
+
+GNU gdb (Ubuntu/Linaro 7.4-2012.04-0ubuntu1) 7.4-2012.04
+Copyright (C) 2012 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "i686-linux-gnu".
+For bug reporting instructions, please see:
+<http://bugs.launchpad.net/gdb-linaro/>...
+Reading symbols from /home/logbird/c/a.out...done.
+(gdb) 
+
+或者直接输入 gdb 进入调试 然后使用
+file test 命令来调试 test 程序
+
+3.开始调试
+    start 开始单步执行（再次执行start会提示是否重新开始执行程序）
+    run   执行程序（遇到断点会停止）（再次执行run会提示是否重新开始执行程序）
+    quit  退出程序
+    <enter> 回车键 重复上一个命令
+
+4.查看信息
+    list 查看代码 其中包括行好等信息
+    
+
+5.设置断点调试
+    break <linenum> 使用 break 10 把第十行设置为断点，这样在程序执行到第十行的时候 会停止 等待输入下一个命令
+    tbreak<linenum> 该断点只生效一次
+    enable delete <linenum> linenum位置的断点 激活后 删除 刚刚设置的断点
+    enable <linenum>启用 linenum 位置的断点
+    disable<linenum>暂停 linenum 位置的断点
+    delete <linenum>删除 linenum 位置的断点 与 clear 命令类似 delete需要指定断点编号 clear 指定行号 clear有提示 delete无提示
+    
+    print <var>     使用print 输出 var 变量的值
+    display <exp>   设置监视表达式 exp 的值，被监视的 表达式 每当执行的时候 会输出表达式的值
+    next            使用next 向下执行一步，不会进入函数内部，缩写 n
+    step            使用step 向下执行一步，会进入到函数内部，缩写 s
+    continue <sum>  使用continue 继续执行 到下一断点停止，缩写 c（同 cont）
+    finish          强制退出
+
+6.内存检查命令
+    x/format address    format 指定显示单元的个数 例如 x/2c 0x120110fa0 输入地址为 0x120110fa0 的 值
+    printf"format", (char*)address 使用printf 可以 类似 c函数一样的去设置format
+    
+7.修改变量值
+    set variable <var>      设置变量的值
+
+8.观察窗口
+    watch
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

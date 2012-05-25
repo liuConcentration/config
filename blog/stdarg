@@ -1,0 +1,13 @@
+#include <stdarg.h>
+
+void avg(int n_values, ...)
+{
+    va_list var_args;
+    va_start(var_args, n_values);
+    while(n_values-- >0)
+    {
+        va_arg(var_args, int);
+    }
+    va_end(var_args);
+}
+

@@ -1,0 +1,39 @@
+time.h
+clock_t clock(void);	计算从程序开始时候起，cpu所消耗的时间。
+time_t time(time_t *return_valued);	获取当前时间，返回的 time_t 为时间戳
+char *ctime(time_t *time_value);	将时间戳转换成可读的字符串
+double difftime(time_t time1, time_t time2);	比较两个时间戳
+
+struct tm*gmtime(time_t const *time);	根据time_t 的指针 返回 包含gmt时间的 tm结构
+struct tm*localtime(time_t const *time); 根据time_t 的指针 返回 包含当前时间的 tm 结构
+
+char *asctime(struct tm const *tm_time); 根据tm结构，返回 一个可读的 字符串
+size_t strftime(char *string return_str, size_t maxsize, char const * format, struct tm const *tm_ptr); 根据tm结构返回format格式的时间
+
+
+
+struct tm {
+    /*
+     * the number of seconds after the minute, normally in the range
+     * 0 to 59, but can be up to 60 to allow for leap seconds
+     */
+    int tm_sec;
+    /* the number of minutes after the hour, in the range 0 to 59*/
+    int tm_min;
+    /* the number of hours past midnight, in the range 0 to 23 */
+    int tm_hour;
+    /* the day of the month, in the range 1 to 31 */
+    int tm_mday;
+    /* the number of months since January, in the range 0 to 11 */
+    int tm_mon;
+    /* the number of years since 1900 */
+    long tm_year;
+    /* the number of days since Sunday, in the range 0 to 6 */
+    int tm_wday;
+    /* the number of days since January 1, in the range 0 to 365 */
+    int tm_yday;
+};
+
+
+typedef long clock_t;
+typedef long time_t;
