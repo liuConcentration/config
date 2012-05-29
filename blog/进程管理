@@ -4,7 +4,7 @@
 创建一个进程 以下函数 定义在 unisted.h 中，pid_t 定义在 sys/types.h 中
 pid_t fork(void);
 pid_t vfork(void);
-int __clone();
+int __clone(); 可以对子进程建立时候的内容进行控制
 
 以上两个函数的 区别：
 1.fork 子进程  会复制 父进程的 堆栈信息，vfork再执行exit和execl前与父进程的数据是共享的,所谓共享就是说，没有开辟新的物理内存。
@@ -34,5 +34,23 @@ int execve(const char * filename, char *const argv[],char* const envp[])
 
 pid_t wait(int *status);
 pid_t waitid(pid_t pid, int *status, int options);
+resource.h
+wait3() wait4() 功能和 wait waitid 相同，但是多了一个参数,rusage 结构，存放子进程的信息
+
+
+进程的终止
+    stdlib.h
+    void exit(int status);   EXIT_SUCCESS EXIT_FAILURE 终止正在运行的程序，关闭所有当前进程打开的文件描述符
+    int atexit(void(*function)(void));                  设置一个函数在 程序成功终止的时候调用
+    int on_exit(void(*function)(int, void*), void *arg);类似 atexit ，多了一个arg参数供 回调函数使用
+    void abort(void);                                   发送一个SIGABRT信号，使当前程序终止
+
+    unistd.h
+    void _exit(int status)                      类似exit函数，区别是用来关闭一些linux特有的退出句柄
+
+    断言
+    assert.h
+    void assert(int expression)
+
 
 
