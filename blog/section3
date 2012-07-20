@@ -6,20 +6,62 @@ UNIX 系统SHELL 使用 0作为标准输入得描述符，1为标准输出的描
 在 FreeBSD5.2.1、MAX OS X 10.3、Solaris 9中，文件描述符的范围实际上是无上限的，只是受到系统配置的存储器总量、整型字长、系统管理员所配置的软限制和硬限制的约束。
 Linux2.4.22 对于每个进程的文件描述符的硬限制是 1048576
 
+#include <fcntl.h>
+int open(const char*pathname, int oflag, .../*mode_t mode*/)	创建一个文件，返回文件描述符
+	oflag用来设置文件操作的选项，可以同时配置多个，多个配置实用或运算
 
-int open(const char*pathname, int oflag, .../*mode_t mode*/)
-oflag用来设置文件操作的选项，可以同时配置多个，多个配置实用或运算
+	O_RDONLY 只读打开 0
+	O_WRONLY 只写打开 1
+	O_RDWR 读写打开 2
+	O_APPEND 追加内动到文件末尾
+	O_CREAT 文件不存在则创建，该选项需要第三个参数mode 来指定文件的权限
+	O_EXCL 如果指定了 O_CREAT，文件已存在则报错，可用于判断文件是否存在
+	O_TRUNC 如果文件存在，并且为只写或只读成功打开，则将其长度截短成 0（相当于总是打开一个空文件）
+	O_NOCTTY 如果pathname是终端设备，则不将该设备分配作为此进程的控制终端
+	O_NONBLOCK 如果path指的是一个 FIFO、一个块特殊文件或一个字符特殊文件，则此选项为文件的本次打开操作和后续的I/O操作设置非阻塞模式
+	O_DSYNC 每次write等待I/O操作完成，如果写操作不影响读取刚写入的数据，则不等待文件属性被更新
+	O_RSYNC 每一个以文件描述符作为参数的read操作等待，知道任何对文件同一部分进行的未决写操作都完成
+	O_SYNC 使每次write都等到物理I/O操作完成，包括write操作引起的属性更新所需的I/O
 
-O_RDONLY 只读打开 0
-O_WRONLY 只写打开 1
-O_RDWR 读写打开 2
-O_APPEND 追加内动到文件末尾
-O_CREAT 文件不存在则创建，该选项需要第三个参数mode 来指定文件的权限
-O_EXCL 如果指定了 O_CREAT，文件已存在则报错，可用于判断文件是否存在
-O_TRUNC 如果文件存在，并且为只写或只读成功打开，则将其长度截短成 0
-O_NOCTTY 如果pathname是终端设备，则不将该设备分配作为此进程的控制终端
-O_NONBLOCK 如果path指的是一个 FIFO、一个块特殊文件或一个字符特殊文件，则此选项为文件的本次打开操作和后续的I/O操作设置非阻塞模式
-O_DSYNC
-O_RSYNC
-O_SYNC
+	在POSIX 标准中 _POSIX_NO_TRUNC 决定 当文件名 超过 NAME_MAX 时候，是自动截断还是，返回错误并设置errno为ENAMETOLONG
+
+
+
+#include <fcntl.h>
+int create(const char *pathname, mode_t mode); 创建一个文件 返回文件描述符 WriteOnly 出错 返回 -1
+	该函数相当于 open(pathname, O_WRONLY | O_CREAT | O_TRUNC, mode)
+
+
+
+#include <unistd.h>
+int close(int flags);	关闭一个文件描述符 成功返回0 否则为 -1
+
+
+
+当前文件偏移量：每个文件打开都会有一个当前文件偏移量，通常为非负整数，用于度量从文件开始处计算的字节数。通常都写都是从文件偏移量处开始，并增加偏移量文件都写的字节数，文件打开时，如果没有指定O_APPEND,偏移量一般为0;偏移量还可以通过 lseek函数 去显示的控制。
+
+#include <unistd.h>
+off_t lseek(int filedes, off_t offset, int whence);	如果成功返回新的偏移量， 否则 返回 -1
+	whence参数：
+	SEEK_SET 0 文件偏移量设置为距离开始处offset个字节
+	SEEK_CUR 1 文件偏移量设置为当前值加offset，offset可正可负
+	SEEK_END 2 文件偏移量设置为文件长度加offset，offset可正可负
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
