@@ -1,0 +1,17 @@
+UNIX体系结构
+操作系统为一种软件，用于控制计算机资源，提供程序运行环境，我们称之为内核(Kernel)。
+内核的接口称为系统调用。
+SHELL是一种特殊的应用程序，他为运行其他应用程序提供了一个接口。
+
+登陆
+口令文件：/etc/passwd 查看登录用户信息，文件格式为
+            用户名:加密口令:数值用户ID:用户组ID:注释信息:起始目录:SHELL程序
+            root:x:0:0:super user:/root:/bin/bash
+目前的操作系统为了安全已经将口令转移到一个单独的文件内。
+
+UNIX常见shell
+Bourne shell
+Bourne-again shell
+C shell
+Korn shell
+TENEX C shell（C shell加强版）

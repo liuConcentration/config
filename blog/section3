@@ -1,0 +1,25 @@
+文件描述符---unsigned int，当打或创建一个文件的时候，内核向进程返回一个文件描述符，用于标示这个文件。
+UNIX 系统SHELL 使用 0作为标准输入得描述符，1为标准输出的描述符，2为标准错误的描述符。
+遵从 POSIX协议的 标示符 使用 STDIN_FILENO、STDOUT_FILENO、STDERR_FILENO 来表示这三个数字。<unistd.h>
+
+文件描述符的范围： 0 - OPEN_MAX
+在 FreeBSD5.2.1、MAX OS X 10.3、Solaris 9中，文件描述符的范围实际上是无上限的，只是受到系统配置的存储器总量、整型字长、系统管理员所配置的软限制和硬限制的约束。
+Linux2.4.22 对于每个进程的文件描述符的硬限制是 1048576
+
+
+int open(const char*pathname, int oflag, .../*mode_t mode*/)
+oflag用来设置文件操作的选项，可以同时配置多个，多个配置实用或运算
+
+O_RDONLY 只读打开 0
+O_WRONLY 只写打开 1
+O_RDWR 读写打开 2
+O_APPEND 追加内动到文件末尾
+O_CREAT 文件不存在则创建，该选项需要第三个参数mode 来指定文件的权限
+O_EXCL 如果指定了 O_CREAT，文件已存在则报错，可用于判断文件是否存在
+O_TRUNC 如果文件存在，并且为只写或只读成功打开，则将其长度截短成 0
+O_NOCTTY 如果pathname是终端设备，则不将该设备分配作为此进程的控制终端
+O_NONBLOCK 如果path指的是一个 FIFO、一个块特殊文件或一个字符特殊文件，则此选项为文件的本次打开操作和后续的I/O操作设置非阻塞模式
+O_DSYNC
+O_RSYNC
+O_SYNC
+
