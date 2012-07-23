@@ -35,6 +35,7 @@ int create(const char *pathname, mode_t mode); 创建一个文件 返回文件�
 
 #include <unistd.h>
 int close(int flags);	关闭一个文件描述符 成功返回0 否则为 -1
+	当程序终止时，系统会自动关闭所有打开的文件描述符
 
 
 
@@ -46,6 +47,50 @@ off_t lseek(int filedes, off_t offset, int whence);	如果成功返回新的偏�
 	SEEK_SET 0 文件偏移量设置为距离开始处offset个字节
 	SEEK_CUR 1 文件偏移量设置为当前值加offset，offset可正可负
 	SEEK_END 2 文件偏移量设置为文件长度加offset，offset可正可负
+
+
+#include <unistd.h>
+ssize_t read(int flags, void *buf, size_t nbytes);	从flags中读取 size_t字节的数据 如果已到达文件结尾则返回0 出错返回-1
+
+
+#include <unistd.h>
+int write(int flags, const void *buf, size_t nbytes);	将buf 写入到 flags中 成功返回 已写入的字节数 出错 返回-1
+	默认文件偏移量从 当前偏移位置开始写，如果 open的时候 指定了 O_APPEND 则从文件结尾开始写，如果 nbytes 大于实际字节数 则会导致 内存溢出
+
+
+
+文件共享
+	内核使用三种数据结构打开文件，他们之间的关系决定了文件在共享方面一个进程对另一个进程可能产生的影响。
+	1).每个进程表中都有一个记录项，记录想中包含有一张打开文件描述符表，可将其看成一个矢量，每个文件描述符占一项。文件描述符关联：
+		a).文件描述符标志
+		b).指向一个文件表项的指针
+	2.kernel为所有的打开文件维持一张文件表，表中包含：
+		a).文件状态标志（读、写、填写、同步、非阻塞等）
+		b).当前文件偏移量
+		c).指向该文件V节点表项的指针
+	3.每个打开文件都有一个v节点(v-node)结构，v节点包含了文件类型和对比文件进行各种文件进行操作的函数指针。对于大多数文件，V节点包含了该文件的i节点（i-node，索引节点）。这些信息是在打开文件时从磁盘写入内存的，所以所有关于文件的信息都是快速可供使用的（文件所有者，文件长度，所在设备等）。
+
+	
+原子操作
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
