@@ -72,7 +72,41 @@ int write(int flags, const void *buf, size_t nbytes);	将buf 写入到 flags中 
 
 	
 原子操作
+	#include <unistd.h>	
+	ssize_t pread(int flag, void *buf, size_t nbytes, off_t offset);
+	ssize_t pread(int flag, const void *buf, size_t nbytes, off_t offset);
+	open(path, O_APPEND);
+	open(path, O_CREATE | O_EXCL)	
+	以上四个为原子操作的处理
+	原子操作就是指由多步组成的操作，如果该操作原子的执行，要么执行完所有操作，要么一步也不执行，不可能只执行其中一个子集。
+
+
+dup和dup2函数
+	用于复制一个文件描述符
+	#include <unistd.h>
+	int dup(int flag);
+	int dup2(int flag, int flag2)
+	dup返回的新的文件描述符一定是当前可用文件描述符的最小值。
+	dup2可以用flag2指定心描述符的数字，如果描述符已经存在则 先进行 close，如果flag = flag2 则不close flag
+	dup和dup2两个函数返回的文件描述符共用同一个文件表,所以他们的文件状态标志和偏移量是共享的
+	如果被复制的文件描述符被close，新的 文件描述符也同样会被close掉
+
+fsync、sync、fdatasync
+	用于刷新缓冲区
+	void sync(void) 将所有修改过的块缓冲区排入写队列，但是不等待实际写操作完成，系统通常每30秒调用一次sync函数
+	int fsync(int flag) 将指定文件描述符的文件缓冲区内容写入文件，同时等写操作完成后返回	 0 正常 -1 出错
+	int fdatasync(int flag) 跟fsync类似，不过fsync不更新文件的时间等属性
 	
+#include <unistd.h>
+	
+	int fcntl(int flag, int cmd, /* int arg */)
+	cmd参数
+		F_DUPFD 复制一个现有的文件描述符 返回可用文件描述符大于等于第三个参数的最小值,该描述符与原描述符共享一个文件表。与dup一样该操作会清楚FD_CLOEXEC标志
+		F_GETFD 返回flag的文件描述符标志作为返回值
+		F_SETFD 设置flag的文件描述符标志为第三个参数的值 当 该标志 设置为 0 时 exec不关闭 1时 exec会关闭
+		F_GETFL	获取flag的文件描述符的状态标志
+		F_SETFL 设置flag的文件描述符的状态标志
+		
 
 
 
