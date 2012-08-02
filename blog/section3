@@ -99,13 +99,15 @@ fsync、sync、fdatasync
 	
 #include <unistd.h>
 	
-	int fcntl(int flag, int cmd, /* int arg */)
+	int fcntl(int flag, int cmd, /* int arg */) 出错 返回-1
 	cmd参数
 		F_DUPFD 复制一个现有的文件描述符 返回可用文件描述符大于等于第三个参数的最小值,该描述符与原描述符共享一个文件表。与dup一样该操作会清楚FD_CLOEXEC标志
 		F_GETFD 返回flag的文件描述符标志作为返回值
 		F_SETFD 设置flag的文件描述符标志为第三个参数的值 当 该标志 设置为 0 时 exec不关闭 1时 exec会关闭
 		F_GETFL	获取flag的文件描述符的状态标志
 		F_SETFL 设置flag的文件描述符的状态标志
+        F_GETFL 获取接收SIGIO和SIGURG信号的进程ID和进程组ID
+        F_SETFL 设置接收SIGIO和SIGURG信号的进程ID和进程组ID
 		
 
 
