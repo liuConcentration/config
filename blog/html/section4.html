@@ -187,8 +187,73 @@ int main(int argc, char** argv)
 <blockquote>
 <p>通常有效用户ID 等于 实际用户ID， 有效组ID 等于 实际组ID。</p>
 <p>每个文件都有一个所有者和组所有者，所有者有 <code>stat</code> 结构中的 <code>st_uid</code> 成员表示，组所有者则由 <code>st_gid</code>表示</p>
-<p>当执行一个文件时，进程的有效用户ID通常就是实际用户ID，有效组ID通常就是实际组ID，但是可以在文件模式字（st_mode） 中设置一个特殊标志，其含义是，当执行此文件时，将进程的有效用户ID设置为文件所属者的用户ID（st_uid），同样在文件模式字中也可以设置另外一个特殊标志，使执行此文件时，将进程的有效用户组ID设置为文件组所有者ID（st_uid），在文件模式中的这两位被成为 <code>设置用户ID（set-user-ID）位</code> 和 <code>设置组ID（set-group-ID）位</code>。设置用户ID位 和 设置组ID位 都包含在 <code>st_mode</code> 值中，可以通过常量 <code>S_ISUID</code> 和 <code>S_ISGID</code> 测试。</p>
+<p>当执行一个文件时，进程的有效用户ID通常就是实际用户ID，有效组ID通常就是实际组ID，但是可以在文件模式字（st_mode） 中设置一个特殊标志，其含义是，当执行此文件时，将进程的有效用户ID设置为文件所属者的用户ID（st_uid），同样在文件模式字中也可以设置另外一个特殊标志，使执行此文件时，将进程的有效用户组ID设置为文件组所有者ID（st_uid），在文件模式中的这两位被成为 <code>设置用户ID（set-user-ID）位</code> 和 <code>设置组ID（set-group-ID）位</code>。</p>
+<p>设置用户ID位 和 设置组ID位 都包含在 <code>st_mode</code> 值中，可以通过常量 <code>S_ISUID</code> 和 <code>S_ISGID</code> 测试。</p>
 </blockquote>
+<h2>文件访问权限</h2>
+<p><code>st_mode</code> 值包含了针对文件的访问权限位(所有类型的文件都具有访问权限), 每个文件有9个访问权限位, 其中分为三个部分。使用命令 <code>chmod(1)</code> 可以修改这9个文件权限位,该命令允许我们用<code>u</code>表示文件所有者，<code>g</code> 表示组，<code>o</code> 表示其他。</p>
+<p><strong>9个访问权位，取自&lt;sys/stat.h&gt;</strong>
+<table>
+    <tr>
+        <th>st_mode屏蔽</th>
+        <th>意义</th>
+    </tr>
+    <tr>
+        <td>S_IRUSE</td>
+        <td>用户-读</td>
+    </tr>
+    <tr>
+        <td>S_IWUSE</td>
+        <td>用户-写</td>
+    </tr>
+    <tr>
+        <td>S_IXUSE</td>
+        <td>用户-执行</td>
+    </tr>
+    <tr>
+        <td>S_IRGRP</td>
+        <td>组-读</td>
+    </tr>
+    <tr>
+        <td>S_IWGRP</td>
+        <td>组-写</td>
+    </tr>
+    <tr>
+        <td>S_IXGRP</td>
+        <td>组-执行</td>
+    </tr>
+    <tr>
+        <td>S_IROTH</td>
+        <td>其他-读</td>
+    </tr>
+    <tr>
+        <td>S_IWOTH</td>
+        <td>其他-写</td>
+    </tr>
+    <tr>
+        <td>S_IXOTH</td>
+        <td>其他-执行</td>
+    </tr>
+</table></p>
+<ul>
+<li>当用名字打开任意类型的文件时，对该名字中的每一个目录都必须有执行权限，所有目录的执行权限位也被称为搜索位</li>
+<li>对于一个文件的读权限决定了我们能否打开该文件进行读操作，这与<code>open</code>函数的<code>O_RDONLY</code>和<code>O_RDWR</code>标志相关</li>
+<li>对于一个文件的读权限决定了我们能否打开该文件进行读操作，这与<code>open</code>函数的<code>O_WRONLY</code>和<code>O_RDWR</code>标志相关</li>
+<li>如果 <code>open</code> 指定了 <code>O_TRUNC</code> 标志，那么必须对该文件具有写权限</li>
+<li>为了在一个目录中创建一个新文件，必须对包含该文件的目录具有写权限和执行权限</li>
+<li>为了删除一个现有的文件，必须对包含该文件的目录具有写权限和执行权限，对文件本身则不需要有读写权限</li>
+<li>如果用6个 <code>exec</code> 函数中的任何一个执行某个文件，都必须对该文件具有执行权限，而且该文件必须是一个普通文件</li>
+</ul>
+<blockquote>
+<p>进程每次打开创建或者删除一个文件的时候，都会对文件进行访问权限测试，而这种测试可能涉及文件的所有者（<code>st_uid</code>, <code>st_gid</code>）、进程的有效ID（有效用户ID和组ID），以及进程的附加组ID,进程会进行以下测试：</p>
+<ol>
+<li>如果进程的有效ID是0（0为ROOT用户），则允许访问，这给予了超级用户对整个文件操作系统进行处理的最充分的自由</li>
+<li>如果进程的有效用户ID与文件所有者ID相等，那么如果所有者适当的权限位被设置，则允许访问，否则拒绝访问，适当的访问权限位指的是，若进程为读而打开文件，读位应为1，为写打开，写位为1，为执行打开，执行位为1</li>
+<li>如果进程的有效组ID或者进程的附加组ID之一等于文件的组ID，那么如果组适当的访问权限被设置则允许访问</li>
+<li>如果其他用户的访问权限位被设置，则允许访问，否则拒绝访问</li>
+</ol>
+</blockquote>
+<p><strong>注意：如果进程用于该文件，则按用户权限批准或拒绝该进程对文件的访问，不查看组访问权限，如果进程不用于这个文件，进程数据适当的组，则不进行其他访问权限的测试</strong></p>
 </div>
 </td></tr>
 <tr class="area-footer"><td>Generated with <a href="http://sourceforge.net/p/retext/">ReText Webpages generator</a></td></tr>
