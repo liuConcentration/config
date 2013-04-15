@@ -35,7 +35,8 @@
  " NOTE: comments after Bundle command are not allowed..
 
 Bundle 'https://github.com/Lokaltog/vim-powerline.git'
-
+Bundle 'https://github.com/Shougo/neocomplcache.git'
+Bundle 'nanotech/jellybeans.vim'
 
 
 
@@ -98,7 +99,12 @@ set pastetoggle=<F8>
 set laststatus=2
 
 "配色
-colorscheme elflord
+"colorscheme elflord
+
+
+"colors jellybeans 插件 
+colors jellybeans 
+
 
 
 "ctags
@@ -108,4 +114,16 @@ set tags=tags
 "
 set t_Co=256
 "let g:Powerline_symbols = 'unicode'
+
+
+"neocomplcache
+"NeoComplCacheEnable
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_smart_case = 1
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><C-y>  neocomplcache#close_popup()
+inoremap <expr><C-e>  neocomplcache#cancel_popup()
+
+
+
 
