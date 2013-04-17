@@ -37,6 +37,7 @@
 Bundle 'https://github.com/Lokaltog/vim-powerline.git'
 Bundle 'https://github.com/Shougo/neocomplcache.git'
 Bundle 'nanotech/jellybeans.vim'
+Bundle 'https://github.com/vexxor/phpdoc.vim.git'
 
 
 
@@ -71,10 +72,10 @@ endif
 
 "文字编码加入utf8
 " 设定默认解码
-set fileencodings=utf-8,gbk,gb18030,gb2312
-set termencoding=utf-8,gbk,gb18030,gb2312
+set fileencodings=utf-8,gbk,gb18030,gb2312,euc-cn,ucs-bom,cp936
+set termencoding=utf-8,gbk,gb18030,gb2312,euc-cn,ucs-bom,cp936
 set fileformats=unix
-set encoding=prc
+set encoding=UTF-8
 
 
 "自动缩排
@@ -125,5 +126,15 @@ inoremap <expr><C-y>  neocomplcache#close_popup()
 inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
 
+"sparkup
+let g:sparkupExecuteMapping = '<F2>'
 
 
+"PDV
+map <C-p> :set paste<CR>:exe PhpDoc()<CR>:set nopaste<CR>i
+let g:pdv_cfg_Type = "mixed"
+let g:pdv_cfg_Package = ""
+let g:pdv_cfg_Version = "$id$"
+let g:pdv_cfg_Author = "lihao-sal <lihao-sal.360.cn>"
+let g:pdv_cfg_Copyright = "@copyright 2005-2012 360.CN All Rights Reserved."
+let g:pdv_cfg_License = ""
