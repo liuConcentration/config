@@ -1,0 +1,17 @@
+#!/bin/sh
+export LANG=en_US.UTF-8
+svn export svn://123.254.107.152/slmei/trunk/ /var/www/slmei/ --force --username logbird --password lihao123 --no-auth-cache
+chmod -Rf 777 /var/www/slmei/
+chown -Rf www-data:www-data /var/www/slmei/
+rm -rf /var/www/slmei/frame
+
+svn export svn://123.254.107.152/slmei/trunk/frame/ /var/www/lovone/ --force --username logbird --password lihao123 --no-auth-cache
+chmod -Rf 777 /var/www/lovone/
+chown -Rf www-data:www-data /var/www/lovone/
+
+
+cd /var/www/dede/
+svn up
+
+chmod -Rf 777 /var/www/dede/
+chown -Rf www-data:www-data /var/www/dede/
