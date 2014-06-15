@@ -2,25 +2,25 @@
  set nocompatible               " be iMproved
  filetype off                   " required!
 
- set rtp+=~/.vim/bundle/vundle/
- call vundle#rc()
+ set rtp+=~/.vim/bundle/Vundle.vim 
+ call vundle#begin()
 
  " let Vundle manage Vundle
  " required! 
- Bundle 'gmarik/vundle'
+ Plugin'gmarik/vundle'
 
  " My Bundles here:
  "
  " original repos on github
- Bundle 'tpope/vim-fugitive'
- Bundle 'Lokaltog/vim-easymotion'
- Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
- Bundle 'tpope/vim-rails.git'
+ Plugin'tpope/vim-fugitive'
+ Plugin'Lokaltog/vim-easymotion'
+ Plugin'rstacruz/sparkup', {'rtp': 'vim/'}
+ Plugin'tpope/vim-rails.git'
  " vim-scripts repos
- Bundle 'L9'
- Bundle 'FuzzyFinder'
+ Plugin'https://github.com/vim-scripts/L9.git'
+ Plugin'FuzzyFinder'
  " non github repos
- Bundle 'git://git.wincent.com/command-t.git'
+ Plugin'wincent/Command-T'
  " ...
 
  filetype plugin indent on     " required!
@@ -32,11 +32,11 @@
  " :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
  "
  " see :h vundle for more details or wiki for FAQ
- " NOTE: comments after Bundle command are not allowed..
+ " NOTE: comments after Plugincommand are not allowed..
 
 Bundle 'https://github.com/Lokaltog/vim-powerline.git'
 Bundle 'https://github.com/Shougo/neocomplcache.git'
-Bundle 'nanotech/jellybeans.vim'
+Bundle 'https://github.com/nanotech/jellybeans.vim.git'
 Bundle 'https://github.com/vexxor/phpdoc.vim.git'
 
 
