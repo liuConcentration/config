@@ -22,7 +22,7 @@
  " non github repos
  Plugin'wincent/Command-T'
  " ...
-
+ call vundle#end()     
  filetype plugin indent on     " required!
  "
  " Brief help
